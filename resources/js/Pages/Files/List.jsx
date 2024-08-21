@@ -1,23 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import GuestLayout from '../../Layouts/GuestLayout';
 import { Card, Form, Table, ButtonGroup, Button, Row, Col } from 'react-bootstrap';
 
 export default function List() {
 
+    const [search, setSearch] = useState("");
+
     const createNewFile = () => {
         Inertia.get('/add');
     };
-
 
     const serachFile = (event) => {
         event.preventDefault();
 
         const formData = new FormData(event.target);
-        const searchParams = new URLSearchParams(formData);  
+        const searchParams = new URLSearchParams(formData);
 
         Inertia.get('/', searchParams);
-      };
+    };
+
+    const clearSearchResetPage = (event) => {
+        Inertia.get('/');
+    };
+
+    useEffect(() => {
+        setSearch(new URLSearchParams(new URL(window.location.href).search).get('fileName'));
+    }, []);
 
     return (
         <GuestLayout>
@@ -26,13 +35,14 @@ export default function List() {
                 <Card.Body>
                     <form onSubmit={serachFile}>
                         <Row>
-                            <Col>
+                            <Col className="col-10">
                                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                    <Form.Control type="text" name="fileName" placeholder="Введите название файла" />
+                                    <Form.Control type="text" name="fileName" value={search ? search : ''} onChange={e => setSearch(e.target.value)} placeholder="Введите название файла" />
                                 </Form.Group>
                             </Col>
-                            <Col className="auto text-end">
-                                <Button className="btn btn-success pull-right" type="submit">Поиск</Button>
+                            <Col className="col-auto text-end">
+                                <Button className="btn btn-success" type="submit">Поиск</Button>
+                                <Button className="btn btn-secondary pull-right" onClick={clearSearchResetPage}>Сбросить</Button>
                             </Col>
                         </Row>
                     </form>

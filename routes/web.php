@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FileController;
 use Inertia\Inertia;
 
 /*
@@ -22,3 +23,5 @@ Route::get('/', function (Request $request) {
 Route::get('/add', function () {
     return Inertia::render('Files/Create');
 });
+
+Route::post('/upload_file', [FileController::class, 'upload']);
