@@ -1,66 +1,111 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Laravel, Reactjs, Inertia fileupload app
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+#### Must have applications on your PC
 
-## About Laravel
+  1. PHP 8.1.11
+  2. MySQL 8.0.26
+  3. [Git](https://git-scm.com/downloads)
+     
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Built With
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+ 1. [Laravel](https://laravel.com/)
+ 2. [MySQL](https://www.mysql.com/)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Libraries
+ 1. Axios 
+ 2. React-bootstrap
+ 3. React-dropzone
+ 4. React 18.3.1
+ 5. inertiajs/inertia-react
+ 6. laravel-vite-plugin
 
-## Learning Laravel
+#### Installation
+  
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+  ```sh
+  git clone https://github.com/KadylBakyt/laravel-react-bootstrap-fileupload-app.git
+  ```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+  ```sh
+  cd laravel-react-bootstrap-fileupload-app
+  ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+  ```sh
+  composer install
+  ```
 
-## Laravel Sponsors
+  ```sh
+  npm install
+  ```
+  
+ ```sh
+  cp .env.example .env
+  ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## edit `.env` file: 
+> `DB_CONNECTION=mysql`
 
-### Premium Partners
+> `DB_HOST=localhost`
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+> `DB_PORT=3306`
 
-## Contributing
+> `DB_DATABASE=file_upload_test`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+> `DB_USERNAME=kadyl`
 
-## Code of Conduct
+> `DB_PASSWORD=QWERTY!23456`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+  ```sh
+  php artisan migrate
+  ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+  ```sh
+  php artisan storage:link
+  ```
+ 
+  ```sh
+  php artisan cache:clear
+  ```
 
-## License
+  ```sh
+  php artisan config:clear
+  ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+  ```sh
+  npm run dev
+  ```
+
+  ```sh
+  php artisan serve
+  ```
+
+
+#### Laravel main page
+
+> Open the link: [http://localhost:8000](http://localhost:8000)
+
+
+## Screens 
+![image](https://github.com/user-attachments/assets/8ef7557f-8097-4906-b62d-16841d9d1f16)
+
+### add & upload new file page
+![image](https://github.com/user-attachments/assets/a39e4939-d00e-46d1-9d08-1ee852e77e0b)
+
+### after added & uploaded new file redirected to main list
+![image](https://github.com/user-attachments/assets/c4ad15c7-c8ee-4d76-b9f3-62f7643f9fc6)
+
+### delete file
+![image](https://github.com/user-attachments/assets/ff4a8786-913a-4bb8-bfe9-c1a0cc4881c2)
+
+### after delete file redirected to main list
+![image](https://github.com/user-attachments/assets/97a51fab-a91b-4e73-a667-87a0a8c692b3)
+
+
+
+
+
+
+
+
