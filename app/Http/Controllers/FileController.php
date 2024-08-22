@@ -8,6 +8,8 @@ use Inertia\Inertia;
 use App\Models\File;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Http\Response;
+use Illuminate\Http\File as HttpFile;
 
 class FileController extends Controller
 {
@@ -20,7 +22,7 @@ class FileController extends Controller
             $query->where('original_name', 'like', '%' . $request->input('fileName') . '%');
         }
 
-        $items = $query->paginate(10)->withQueryString();
+        $items = $query->orderBy('id', 'desc')->paginate(50)->withQueryString();
 
         $queryString = http_build_query($request);
         Session::flash('message', ['error' => 'File uploaded and stored to DB successfully!']);
@@ -52,13 +54,33 @@ class FileController extends Controller
         $createNewFile = File::create($fileData);
 
         if($createNewFile){
-            Session::flash('success', 'File uploaded and stored to DB successfully!');
-            sleep(2);
+            Session::flash('success', "Файл $fileOrgName успешно загружен и сохранен в БД!");
+            sleep(1);
             return Inertia::render('Files/List');
         }else{
-            Session::flash('error', 'Unable to store in DB. Please try again!');
-            return response()->json(['success' => false, 'message' => 'Unable to store in DB. Please try again']);
+            Session::flash('error', 'Невозможно сохранить в БД. Пожалуйста, попробуйте еще раз!');
+            return response()->json(['success' => false, 'message' => 'Невозможно сохранить в БД. Пожалуйста, попробуйте еще раз!']);
         }
+    }
 
+    public function download(string $filename)
+    {
+        $filePath = public_path('storage/uploads/'.$filename);
+        $file = new HttpFile($filePath);
+        return \Response::download($filePath, $filename, ['Content-Type' => $file->getMimeType()]);
+    }
+
+    public function delete($id)
+    {
+        $file = File::findOrFail($id);
+        $file_name = $file->original_name;
+        $filePath = public_path('storage/'.$file->path);
+        if(file_exists($filePath)) {
+            unlink($filePath);
+        }
+        $file->delete();
+
+        Session::flash('success', "Файл $file_name успешно удален из сервера и из БД!");
+        return response()->json(['success' => true]);
     }
 }

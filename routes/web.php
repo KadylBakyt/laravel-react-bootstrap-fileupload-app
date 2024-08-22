@@ -22,3 +22,5 @@ Route::get('/add', function () {
 });
 
 Route::post('/upload_file', [FileController::class, 'upload']);
+Route::get('/download_file/{filename}', [FileController::class, 'download']);
+Route::delete('/delete_file/{id}', [FileController::class, 'delete']);

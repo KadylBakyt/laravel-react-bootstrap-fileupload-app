@@ -1,4 +1,5 @@
 import React, { useState, useEffect} from 'react';
+import axios from 'axios';
 import { Inertia } from '@inertiajs/inertia';
 import GuestLayout from '../../Layouts/GuestLayout';
 import { Card, Form, Table, ButtonGroup, Button, Row, Col, Nav, Image } from 'react-bootstrap';
@@ -21,6 +22,34 @@ export default function List({files}) {
     };
 
     const clearSearchResetPage = (event) => {
+        Inertia.get('/');
+    };
+
+    const handleFileDownload = (filename) => {
+        axios.get(`/download_file/${filename}`, {
+            responseType: 'blob', // Specify binary response
+        })
+        .then(response => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+        })
+        .catch(error => {
+            console.error('Error downloading file:', error);
+        });
+    };
+
+    const handleDeleteFile= (id, filename) => {
+        if(!confirm(`Вы действительно хотите удалить файл (${filename}) ?`));
+        event.preventDefault();
+
+        axios.delete(`/delete_file/${id}`)
+        .then()
+        .catch();
+
         Inertia.get('/');
     };
 
@@ -61,8 +90,25 @@ export default function List({files}) {
                     </Row>
 
                 </Card.Header>
+                <Row className="mt-3">
+                    <Col>
+                        <Nav className='justify-content-center'>
+                            <ul className="pagination">
+                                {files.links.map(link => {
+                                    return (
+                                        <li className={link.active ? "page-item active" : "page-item"} key={link.label}>
+                                            <a className="page-link " href={link.url}>
+                                                <span aria-hidden="true">{link.label.replace("&raquo;", '').replace("&laquo;",'')}</span>
+                                            </a>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        </Nav>
+                    </Col>
+                </Row>
                 <Card.Body>
-                    <Table striped bordered hover size="sm">
+                    <Table striped bordered hover responsive="sm">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -90,8 +136,8 @@ export default function List({files}) {
                                     </td>
                                     <td>
                                         <ButtonGroup aria-label="Basic example">
-                                            <Button variant="primary">Скачать</Button>
-                                            <Button variant="danger">Удалить</Button>
+                                            <Button variant="primary" onClick={() => handleFileDownload(item.path.replace("uploads/", ''))}>Скачать</Button>
+                                            <Button variant="danger" onClick={() => handleDeleteFile(item.id, item.original_name)}>Удалить</Button>
                                         </ButtonGroup>
                                     </td>
                                 </tr>
