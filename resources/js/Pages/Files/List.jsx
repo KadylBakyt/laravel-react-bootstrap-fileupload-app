@@ -2,7 +2,7 @@ import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import { Inertia } from '@inertiajs/inertia';
 import GuestLayout from '../../Layouts/GuestLayout';
-import { Card, Form, Table, ButtonGroup, Button, Row, Col, Nav, Image } from 'react-bootstrap';
+import { Card, Form, Table, ButtonGroup, Button, Row, Col, Nav, Image, Alert } from 'react-bootstrap';
 
 export default function List({files}) {
 
@@ -41,6 +41,14 @@ export default function List({files}) {
             console.error('Error downloading file:', error);
         });
     };
+
+    function bytesToSize(bytes, seperator = " ") {
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+        if (bytes == 0) return 'n/a'
+        const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10)
+        if (i === 0) return `${bytes}${seperator}${sizes[i]}`
+        return `${(bytes / (1024 ** i)).toFixed(1)}${seperator}${sizes[i]}`
+    }
 
     const handleDeleteFile= (id, filename) => {
         if(!confirm(`Вы действительно хотите удалить файл (${filename}) ?`));
@@ -82,7 +90,7 @@ export default function List({files}) {
                     <Row>
                         <Col className='col-10'>
                             <b>Список файлов </b>
-                            <i>(Записи с {files.from} до {files.to} из {files.total} записей, {files.to - files.from + 1} записей на текущей странице)</i>
+                            <i>(Записи с {files.from} до {files.to} из {files.total} записей, { (files.total > 0) ? (files.to - files.from + 1) : '0' } записей на текущей странице)</i>
                         </Col>
                         <Col className="text-end">
                             <Button className="btn btn-success pull-right" onClick={createNewFile}>+ Добавить файл</Button>
@@ -94,7 +102,7 @@ export default function List({files}) {
                     <Col>
                         <Nav className='justify-content-center'>
                             <ul className="pagination">
-                                {files.links.map(link => {
+                                {files.total > 0 && files.links.map(link => {
                                     return (
                                         <li className={link.active ? "page-item active" : "page-item"} key={link.label}>
                                             <a className="page-link " href={link.url}>
@@ -124,7 +132,7 @@ export default function List({files}) {
                                 <tr key={item.id}>
                                     <td>{item.id}</td>
                                     <td>{item.original_name}</td>
-                                    <td>{item.size}</td>
+                                    <td>{bytesToSize(item.size)}</td>
                                     <td>{item.mime_type}</td>
                                     <td>
                                         <Image
@@ -144,13 +152,22 @@ export default function List({files}) {
                             )) }
                         </tbody>
                     </Table>
+
+                    { files.total == 0 && (
+                        <Row className="text-center mt-2">
+                            <Col>
+                                <Alert key='warning' variant='warning'>Записи не найдены</Alert>
+                            </Col>
+                        </Row>
+                    )}
+
                 </Card.Body>
                 <Card.Footer>
                     <Row>
                         <Col>
                             <Nav className='justify-content-center'>
                                 <ul className="pagination">
-                                    {files.links.map(link => {
+                                    {files.total > 0 && files.links.map(link => {
                                         return (
                                             <li className={link.active ? "page-item active" : "page-item"} key={link.label}>
                                                 <a className="page-link " href={link.url}>
