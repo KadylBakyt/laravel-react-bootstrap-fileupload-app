@@ -6,7 +6,6 @@ import { Card, Form, Table, ButtonGroup, Button, Row, Col, Nav, Image } from 're
 export default function List({files}) {
 
     const [search, setSearch] = useState("");
-    console.log(files);
 
     const createNewFile = () => {
         Inertia.get('/add');

@@ -10,7 +10,7 @@ export default function GuestLayout({ children }) {
   return (
     <>
         <Header/>
-            <Container className="mt-3 mb-4">
+            <Container className="mt-3 mb-3">
                 {flash.success && (
                     <Alert key='success' variant='success'>{flash.success}</Alert>
                 )}
@@ -20,6 +20,7 @@ export default function GuestLayout({ children }) {
                 )}
                 { children }
             </Container>
+            <br></br>
         <Footer/>
     </>
   );

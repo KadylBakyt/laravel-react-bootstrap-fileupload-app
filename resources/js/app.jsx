@@ -18,4 +18,6 @@ createInertiaApp({
             </ThemeProvider>
         )
     },
-})
+}).then(() => {
+    document.getElementById('app').removeAttribute('data-page');
+});
