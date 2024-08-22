@@ -36,7 +36,8 @@ export default function Create() {
             setUploadProgress(progress);
           }
         });
-        console.log(response.data);
+
+        Inertia.get('/');
 
       } catch (error) {
         console.error(error.response);

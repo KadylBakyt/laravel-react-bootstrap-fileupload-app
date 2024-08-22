@@ -15,10 +15,7 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function (Request $request) {
-    $queryString = http_build_query($request);
-    return Inertia::render('Files/List', ['query' => $queryString]);
-});
+Route::get('/', [FileController::class, 'index']);
 
 Route::get('/add', function () {
     return Inertia::render('Files/Create');

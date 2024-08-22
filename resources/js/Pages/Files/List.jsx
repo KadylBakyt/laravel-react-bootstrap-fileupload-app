@@ -1,11 +1,12 @@
 import React, { useState, useEffect} from 'react';
 import { Inertia } from '@inertiajs/inertia';
 import GuestLayout from '../../Layouts/GuestLayout';
-import { Card, Form, Table, ButtonGroup, Button, Row, Col } from 'react-bootstrap';
+import { Card, Form, Table, ButtonGroup, Button, Row, Col, Nav, Image } from 'react-bootstrap';
 
-export default function List() {
+export default function List({files}) {
 
     const [search, setSearch] = useState("");
+    console.log(files);
 
     const createNewFile = () => {
         Inertia.get('/add');
@@ -48,11 +49,12 @@ export default function List() {
                     </form>
                 </Card.Body>
             </Card>
-            <Card className="mt-3">
+            <Card className="mt-3 mb-3">
                 <Card.Header className="bg-dark text-light">
                     <Row>
-                        <Col>
-                            <h5>Список файлов</h5>
+                        <Col className='col-10'>
+                            <b>Список файлов </b>
+                            <i>(Записи с {files.from} до {files.to} из {files.total} записей, {files.to - files.from + 1} записей на текущей странице)</i>
                         </Col>
                         <Col className="text-end">
                             <Button className="btn btn-success pull-right" onClick={createNewFile}>+ Добавить файл</Button>
@@ -73,23 +75,50 @@ export default function List() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>@mdo</td>
-                                <td>
-                                    <ButtonGroup aria-label="Basic example">
-                                        <Button variant="warning">Edit</Button>
-                                        <Button variant="primary">Edit</Button>
-                                        <Button variant="danger">Delete</Button>
-                                    </ButtonGroup>
-                                </td>
-                            </tr>
+                            { files && files.data.map( (item) => (
+                                <tr key={item.id}>
+                                    <td>{item.id}</td>
+                                    <td>{item.original_name}</td>
+                                    <td>{item.size}</td>
+                                    <td>{item.mime_type}</td>
+                                    <td>
+                                        <Image
+                                            src={'./storage/' + item.path}
+                                            alt="me"
+                                            width="100px"
+                                            height="100px"
+                                        />
+                                    </td>
+                                    <td>
+                                        <ButtonGroup aria-label="Basic example">
+                                            <Button variant="primary">Скачать</Button>
+                                            <Button variant="danger">Удалить</Button>
+                                        </ButtonGroup>
+                                    </td>
+                                </tr>
+                            )) }
                         </tbody>
                     </Table>
                 </Card.Body>
+                <Card.Footer>
+                    <Row>
+                        <Col>
+                            <Nav className='justify-content-center'>
+                                <ul className="pagination">
+                                    {files.links.map(link => {
+                                        return (
+                                            <li className={link.active ? "page-item active" : "page-item"} key={link.label}>
+                                                <a className="page-link " href={link.url}>
+                                                    <span aria-hidden="true">{link.label.replace("&raquo;", '').replace("&laquo;",'')}</span>
+                                                </a>
+                                            </li>
+                                        )
+                                    })}
+                                </ul>
+                            </Nav>
+                        </Col>
+                    </Row>
+                </Card.Footer>
             </Card>
         </GuestLayout>
     )
